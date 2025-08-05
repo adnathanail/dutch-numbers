@@ -1,6 +1,6 @@
 ONES: dict[str, str] = {
     "0": "nul",
-    "1": "een",  # TODO één?
+    "1": "één",
     "2": "twee",
     "3": "drie",
     "4": "vier",
@@ -39,11 +39,18 @@ def num_to_words(n: int) -> str:
     elif 11 <= n <= 19:
         return TEENS[str(n)]
     elif 10 <= n <= 99:
-        tens, ones = str(n)
-        if ones == "0":
-            return TENS[tens]
+        tens_digit, ones_digit = str(n)
+        if ones_digit == "0":
+            return TENS[tens_digit]
         else:
-            return f"{ONES[ones]}en{TENS[tens]}"
+            ones = ONES[ones_digit]
+            if ones == "één":
+                ones = "een"
+            if ones[-1] in ["a", "e", "i", "o", "u"]:
+                en = "ën"
+            else:
+                en = "en"
+            return f"{ones}{en}{TENS[tens_digit]}"
     return "?"
 
 for i in range(0, 100):

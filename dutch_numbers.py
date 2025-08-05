@@ -47,11 +47,15 @@ def proc_one_to_ninety_nine(n: int) -> str:
     elif 10 <= n <= 99:
         tens_digit, ones_digit = str(n)
         if ones_digit == "0":
+            # Prevent nulentwintig
             return TENS[tens_digit]
         else:
-            ones = ONES[ones_digit]
-            if ones == "één":
+            # Een only has diacritics when written by itself
+            if ones_digit == "1":
                 ones = ONE_NO_DIACRITICS
+            else:
+                ones = ONES[ones_digit]
+            # En has diacritics when written after a vowel
             if ones[-1] in VOWELS:
                 en = AND_AFTER_VOWEL
             else:
@@ -59,22 +63,19 @@ def proc_one_to_ninety_nine(n: int) -> str:
             return f"{ones}{en}{TENS[tens_digit]}"
     raise Exception(f"(0-99) Invalid input : {n}")
 
-def proc_hundreds_digit(hundreds_digit: str) -> str:
-    if hundreds_digit == "1":
-        return HUNDRED
-    elif hundreds_digit in ONES:
-        return ONES[hundreds_digit] + HUNDRED
-    raise Exception(f"(100s) Invalid input : {hundreds_digit}")
-
 def proc_to_999(n: int) -> str:
     if 0 <= n <= 99:
         return proc_one_to_ninety_nine(n)
     elif 100 <= n <= 999:
         hundreds_digit, tens_digit, ones_digit = str(n)
-        if tens_digit == "0" and ones_digit == "0":
-            return proc_hundreds_digit(hundreds_digit)
+        if hundreds_digit == "1":
+            hundreds = HUNDRED
         else:
-            hundreds = proc_hundreds_digit(hundreds_digit)
+            hundreds = ONES[hundreds_digit] + HUNDRED
+        if tens_digit == "0" and ones_digit == "0":
+            # Prevent tweehonderdnul
+            return hundreds
+        else:
             tens_and_ones = proc_one_to_ninety_nine(int(tens_digit + ones_digit))
             return hundreds + tens_and_ones
     raise Exception(f"(0-999) Invalid input : {n}")

@@ -1,3 +1,5 @@
+import random
+
 ONES: dict[str, str] = {
     "0": "nul",
     "1": "één",
@@ -85,5 +87,13 @@ def num_to_words(n: int) -> str:
         return proc_to_999(n)
     return "?"
 
-for i in range(0, 1000):
-    print(i, num_to_words(i))
+while True:
+    num_to_guess = random.randint(0, 100)
+    print(f"What is '{num_to_guess}' in Dutch? (you may wish to copy these characters: éë)")
+    guess = input()
+    num_in_dutch = num_to_words(num_to_guess)
+    if guess == num_in_dutch:
+        print("Correct!")
+    else:
+        print(f"Incorrect, it was {num_in_dutch}")
+    print()
